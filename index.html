@@ -33,6 +33,7 @@
 
         var domainArray = data.map(function(d) { return d.x });
         myChart.domain(domainArray);
+        myChart.tipText(function(d) { return d.x; });
 
         var chartWrapper = d3.select('#chart')
             .datum(data)
