@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>a3 - Peer Review</title>
+
+    <!--Your stylesheet-->
+    <!-- <link rel="stylesheet" href="css/main.css"> -->
+
+    <!--D3-->
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <!-- jQuery library -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.js"></script>
+    <link rel="stylesheet" href="//rawgithub.com/Caged/d3-tip/master/examples/example-styles.css">
+
+    <!--Your script-->
+    <script src="dankchart.js"></script>
+</head>
+<body>
+
+<div id="chart"></div>
+
+</body>
+
+<script>
+    d3.json("data.json", function(error, data) {
+        if (error) throw error;
+
+        var myChart = DankChart();
+
+        var domainArray = data.map(function(d) { return d.x });
+        myChart.domain(domainArray);
+
+        var chartWrapper = d3.select('#chart')
+            .datum(data)
+            .call(myChart);
+    });
+</script>
+
+</html>

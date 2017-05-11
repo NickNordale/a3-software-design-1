@@ -26,8 +26,6 @@ var DankChart = function() {
 		var drawWidth = width - margin.left - margin.right;
 
 		selection.each(function(data) {
-			var data = data.values;
-
 			var el = d3.select(this);
 			var container = el.selectAll("svg").data([data]);
 
@@ -69,15 +67,13 @@ var DankChart = function() {
     		var xAxis = d3.axisBottom();
     		var yAxis = d3.axisLeft().tickFormat(d3.format('.2s'));
 
-    		//console.log('data', data);
-    		//var domain = data.map(function(d) {return d.x; });
+    		// console.log('data', data);
+    		// var domain = data.map(function(d) {return d.x; });
             xScale.range([0, drawWidth]).padding(0.2).domain(domain);
 
-            var yMax = d3.max(data, (d) => +d.y) * 1.15;
-            var yMin = d3.min(data, (d) => +d.y) * .85;
+            var yMax = d3.max(data, function(d) { return parseFloat(d.y) }) * 1.15;
+            var yMin = d3.min(data, function(d) { return parseFloat(d.y) }) * .85;
             yScale.range([drawHeight, 0]).domain([yMin, yMax]);
-
-
 
             xAxis.scale(xScale);
             yAxis.scale(yScale);
@@ -93,11 +89,11 @@ var DankChart = function() {
             bars.enter().append('rect')
             	.merge(bars)
                 .attr('class', '.bar')
-                .attr('x', (d) => xScale(d.x))
-                .attr('y', (d) => yScale(d.y))
+                .attr('x', function(d) { return xScale(d.x) })
+                .attr('y', function(d) { return yScale(d.y) })
                 .attr('width', xScale.bandwidth())
-                .attr('height', (d) => (drawHeight - yScale(d.y)))
-                .attr('fill', (d) => colorScale(d.color))
+                .attr('height', function(d) { return (drawHeight - yScale(d.y)) })
+                .attr('fill', function(d) { return colorScale(d.color) })
                 .on('mouseover', tip.show)
                 .on('mouseout', tip.hide)
 
@@ -147,6 +143,7 @@ var DankChart = function() {
 		domain = val;
 		return chart;
 	}
+
 	chart.color = function(val1, val2) {
 		if(!arguments.length) return colorScale;
 		if(arguments.length != 2) console.error('Incorrect number of params: Must supply both a color domain and a range');
